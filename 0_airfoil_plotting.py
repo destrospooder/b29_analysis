@@ -1,25 +1,38 @@
 #!/bin/env python
 
 import numpy as np
+import scipy as sci
 import matplotlib.pyplot as plt
 from parameters import *
 
-def coords_parse(filename, chord_length):
-    coords = np.loadtxt(filename, delimiter = ',')
-    x = chord_length * coords[:, 0]
-    y = chord_length * coords[:, 1]
-    return x, y
+b29_root = Airfoil(5.5, 0.22, 0.302, 0.017, 0.302)
+b29_tip = Airfoil(2.2, 0.09, 0.30, 0.022, 0.30)
 
-b29_root_x, b29_root_y = coords_parse('b29_root.csv', b29_root_chord)
-b29_tip_x, b29_tip_y = coords_parse('b29_tip.csv', b29_tip_chord)
+b29_root.process_coords('b29_root.csv')
+b29_tip.process_coords('b29_tip.csv')
 
-plt.scatter(b29_root_x, b29_root_y, label = 'root airfoil coordinates')
-plt.scatter(b29_root_x[1:19], ((b29_root_y[:19] + b29_root_y[21:]) / 2)[1:19] , label = 'root airfoil mac')
-# this isn't exactly correct for the mean camber line, but it's close enough that i'm not concerned
-plt.legend()
-plt.show()
+fig, ax = plt.subplots(2, 1, figsize=(12, 6))
 
-plt.scatter(b29_tip_x, b29_tip_y, label = 'tip airfoil coordinates')
-plt.scatter(b29_tip_x[1:19], ((b29_tip_y[:19] + b29_tip_y[21:]) / 2)[1:19] , label = 'tip airfoil mac')
-plt.legend()
+xs = 2 * np.pi * np.linspace(0, 1, 1000)
+ax1 = ax[0]
+ax1.scatter(b29_root.x_coords, b29_root.y_coords, marker = 'o', label = 'airfoil points')
+ax1.plot(xs, b29_root.top_curve(xs), color = 'k')
+ax1.plot(xs, b29_root.bottom_curve(xs), color = 'k')
+ax1.plot(xs, 0.5 * (b29_root.top_curve(xs) + b29_root.bottom_curve(xs)), color = 'r', label = 'mean camber line')
+ax1.legend()
+ax1.set_xlabel('x')
+ax1.set_ylabel('y')
+ax1.set_title('b29 root airfoil')
+
+ax2 = ax[1]
+ax2.scatter(b29_tip.x_coords, b29_tip.y_coords, marker = 'o', label = 'airfoil points')
+ax2.plot(xs, b29_tip.top_curve(xs), color = 'k')
+ax2.plot(xs, b29_tip.bottom_curve(xs), color = 'k')
+ax2.plot(xs, 0.5 * (b29_tip.top_curve(xs) + b29_tip.bottom_curve(xs)), color = 'r', label = 'mean camber line')
+ax2.legend()
+ax2.set_xlabel('x')
+ax2.set_ylabel('y')
+ax2.set_title('b29 tip airfoil')
+plt.tight_layout()
+plt.savefig('airfoil_plots.png')
 plt.show()

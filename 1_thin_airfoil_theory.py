@@ -2,4 +2,7 @@
 
 # Roughly analogous to HW 4 Problem 4
 
-# reformatting this weekend to increase modularity of code and make future assignments easier
+import numpy as np
+import matplotlib.pyplot as plt
+from parameters import *
+
