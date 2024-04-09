@@ -19,7 +19,7 @@ class Airfoil:
         self.xs = np.linspace(0, self.chord_length, 1000)
         self.top_curve = (sci.interpolate.CubicSpline(self.x_coords[:19], self.y_coords[:19]))(self.xs)
         self.bottom_curve = (sci.interpolate.CubicSpline(self.x_coords[19:], self.y_coords[19:]))(self.xs)
-        self.mean_chord_line = 0.5 * (self.top_curve + self.bottom_curve)
+        self.mean_chord_line = 0.5 * (self.top_curve + self.bottom_curve) # z-bar
 
 class Wing:
     def __init__(self, root_airfoil, tip_airfoil, wingspan, wing_area, twist,):
@@ -30,7 +30,14 @@ class Wing:
         self.wing_area = wing_area
         self.aspect_ratio = wingspan ** 2 / wing_area
         self.twist = twist
-        
+
+# chord lengths were estimated using a three-view pic of the b29
+b29_root = Airfoil(5.5, 0.22, 0.302, 0.017, 0.302)
+b29_tip = Airfoil(2.2, 0.09, 0.30, 0.022, 0.30)
+
+b29_root.process_coords('data/b29_root.csv')
+b29_tip.process_coords('data/b29_tip.csv')
+
 # wingspan = 43.05 # m
 # wing_area = 161.3 # m
 # aspect_ratio = 11.5

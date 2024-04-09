@@ -1,18 +1,10 @@
 #!/bin/env python
 
-import numpy as np
-import scipy as sci
 import matplotlib.pyplot as plt
 from parameters import *
 
-# chord lengths were estimated using a three-view pic of the b29
-b29_root = Airfoil(5.5, 0.22, 0.302, 0.017, 0.302)
-b29_tip = Airfoil(2.2, 0.09, 0.30, 0.022, 0.30)
-
-b29_root.process_coords('b29_root.csv')
-b29_tip.process_coords('b29_tip.csv')
-
 fig, ax = plt.subplots(2, 1, figsize=(12, 6))
+fig.suptitle('airfoil profiles')
 
 ax1 = ax[0]
 ax1.scatter(b29_root.x_coords, b29_root.y_coords, marker = 'o', label = 'airfoil points')
@@ -34,5 +26,5 @@ ax2.set_xlabel('x')
 ax2.set_ylabel('y')
 ax2.set_title('b29 tip airfoil')
 plt.tight_layout()
-plt.savefig('airfoil_plots.png')
+plt.savefig('plots/airfoil_plots.png')
 plt.show()
