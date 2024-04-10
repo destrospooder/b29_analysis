@@ -19,7 +19,8 @@ fig.suptitle("Cl and Cm_LE for b29 root airfoil")
 
 ax1 = ax[0]
 ax1.plot(alpha, b29_root.Cl, color="k")
-ax1.plot(-b29_root.Cl_0 / b29_root.dCl_dalpha,
+ax1.plot(
+    -b29_root.Cl_0 / b29_root.dCl_dalpha,
     0,
     "ro",
     label="alpha_L0 = "
@@ -45,7 +46,8 @@ fig.suptitle("Cl and Cm_LE for b29 tip airfoil")
 
 ax1 = ax[0]
 ax1.plot(alpha, b29_tip.Cl, color="k")
-ax1.plot(-b29_tip.Cl_0 / b29_tip.dCl_dalpha,
+ax1.plot(
+    -b29_tip.Cl_0 / b29_tip.dCl_dalpha,
     0,
     "ro",
     label="alpha_L0 = "
@@ -75,14 +77,17 @@ ax1.plot(
     b29_root.Fl,
     color="k",
 )
-ax1.plot(-b29_root.Fl_0 / b29_root.dFl_dalpha,
+ax1.plot(
+    -b29_root.Fl_0 / b29_root.dFl_dalpha,
     0,
     "ro",
     label="alpha_L0 = "
     + str(np.rad2deg(-b29_root.Fl_0 / b29_root.dFl_dalpha))
     + " degrees",
 )
-ax1.plot(alpha, max_takeoff_weight * np.ones_like(alpha), '-.', label = 'max takeoff weight')
+ax1.plot(
+    alpha, max_takeoff_weight * np.ones_like(alpha), "-.", label="max takeoff weight"
+)
 ax1.set_xlabel("alpha [rad]")
 ax1.set_ylabel("Fl [N]")
 ax1.legend()
@@ -94,14 +99,17 @@ ax2.plot(
     b29_tip.Fl,
     color="k",
 )
-ax2.plot(-b29_tip.Fl_0 / b29_tip.dFl_dalpha,
+ax2.plot(
+    -b29_tip.Fl_0 / b29_tip.dFl_dalpha,
     0,
     "ro",
     label="alpha_L0 = "
     + str(np.rad2deg(-b29_tip.Fl_0 / b29_tip.dFl_dalpha))
     + " degrees",
 )
-ax2.plot(alpha, max_takeoff_weight * np.ones_like(alpha), '-.', label = 'max takeoff weight')
+ax2.plot(
+    alpha, max_takeoff_weight * np.ones_like(alpha), "-.", label="max takeoff weight"
+)
 ax2.set_xlabel("alpha [rad]")
 ax2.set_ylabel("Fl [N]")
 ax2.set_title("Fl vs. alpha, b29_tip")

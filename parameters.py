@@ -77,8 +77,9 @@ class Airfoil:
         self.Cm_LE = -(self.Cl / 4) + (np.pi / 4) * (self.A2 - self.A1)
         self.dCl_dalpha, self.Cl_0 = np.polyfit(alpha, self.Cl, 1)
 
-        self.Fl = 0.5 * self.Cl * density * (cruise_speed ** 2) * wing.wing_area
+        self.Fl = 0.5 * self.Cl * density * (cruise_speed**2) * wing.wing_area
         self.dFl_dalpha, self.Fl_0 = np.polyfit(alpha, self.Fl, 1)
+
 
 class Wing:
     def __init__(
@@ -97,14 +98,15 @@ class Wing:
         self.aspect_ratio = wingspan**2 / wing_area
         self.twist = twist
 
+
 # chord lengths were estimated using a three-view pic of the b29
 b29_root = Airfoil(5.5, 0.22, 0.302, 0.017, 0.302)
 b29_tip = Airfoil(2.2, 0.09, 0.30, 0.022, 0.30)
 wing = Wing(b29_root, b29_tip, 43.05, 161.3, -1 * np.pi / 180)
 
-max_takeoff_weight = 133500 * 4.44822 # N
-cruise_speed = 220 * 0.44704 # m/s
-density = 0.387 # kg/m^3, at 10000 m up
+max_takeoff_weight = 133500 * 4.44822  # N
+cruise_speed = 220 * 0.44704  # m/s
+density = 0.387  # kg/m^3, at 10000 m up
 
 b29_root.process_coords("data/b29_root.csv")
 b29_tip.process_coords("data/b29_tip.csv")
