@@ -146,7 +146,6 @@ class Wing:
         self.Cd_skin = self.skin_friction_drag / (1/2 * density * (cruise_speed ** 2) * (self.wingspan / 2) * self.root_airfoil.chord_length)
 
 
-
 # chord lengths were estimated using a three-view pic of the b29
 b29_root = Airfoil(5.5, 0.22, 0.302, 0.017, 0.302)
 b29_tip = Airfoil(2.2, 0.09, 0.30, 0.022, 0.30)
@@ -154,8 +153,8 @@ wing = Wing(b29_root, b29_tip, 43.05, 161.3, -1 * np.pi / 180)
 
 max_takeoff_weight = 133500 * 4.44822  # N
 cruise_speed = 220 * 0.44704  # m/s
-density = 0.387  # kg/m^3, at 10000 m up
-dyn_viscosity = 1.78e-5 # kg/(ms), sutherland's law can suck my-
+density = 0.532 # kg/m^3, at 10000 m up
+dyn_viscosity = 2.18e-5 # kg/(ms), sutherland's law can suck my-
 
 b29_root.process_coords("data/b29_root.csv")
 b29_tip.process_coords("data/b29_tip.csv")
