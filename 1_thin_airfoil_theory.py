@@ -20,11 +20,11 @@ fig.suptitle("Cl and Cm_LE for b29 root airfoil")
 ax1 = ax[0]
 ax1.plot(alpha, b29_root.Cl, color="k")
 ax1.plot(
-    -b29_root.Cl_0 / b29_root.dCl_dalpha,
+    b29_root.alpha_L0,
     0,
     "ro",
     label="alpha_L0 = "
-    + str(np.rad2deg(-b29_root.Cl_0 / b29_root.dCl_dalpha))
+    + str(np.rad2deg(b29_root.alpha_L0))
     + " degrees",
 )
 ax1.set_xlabel("alpha [rad]")
@@ -47,11 +47,11 @@ fig.suptitle("Cl and Cm_LE for b29 tip airfoil")
 ax1 = ax[0]
 ax1.plot(alpha, b29_tip.Cl, color="k")
 ax1.plot(
-    -b29_tip.Cl_0 / b29_tip.dCl_dalpha,
+    b29_tip.alpha_L0,
     0,
     "ro",
     label="alpha_L0 = "
-    + str(np.rad2deg(-b29_tip.Cl_0 / b29_tip.dCl_dalpha))
+    + str(np.rad2deg(b29_tip.alpha_L0))
     + " degrees",
 )
 ax1.set_xlabel("alpha [rad]")
