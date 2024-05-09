@@ -42,19 +42,19 @@ class Airfoil:
             @ np.vstack([x**7, x**6, x**5, x**4, x**3, x**2, x, 1])
         )[0]
 
-        dzbar_dx = (sp.diff(self.zbar, x)).subs(
+        self.dzbar_dx = (sp.diff(self.zbar, x)).subs(
             x, (1 / 2) * (1 - sp.cos(phi))
         )
 
         if load == "":
-            self.A0_minus_alpha = (-1 / np.pi) * sp.integrate(dzbar_dx, (phi, 0, np.pi))
+            self.A0_minus_alpha = (-1 / np.pi) * sp.integrate(self.dzbar_dx, (phi, 0, np.pi))
             print("A0 calculated")
             self.A1 = (2 / np.pi) * sp.integrate(
-                dzbar_dx * sp.cos(phi), (phi, 0, np.pi)
+                self.dzbar_dx * sp.cos(phi), (phi, 0, np.pi)
             )
             print("A1 calculated")
             self.A2 = (2 / np.pi) * sp.integrate(
-                dzbar_dx * sp.cos(2 * phi), (phi, 0, np.pi)
+                self.dzbar_dx * sp.cos(2 * phi), (phi, 0, np.pi)
             )
             print("A2 calculated")
             if save != "":
@@ -73,11 +73,11 @@ class Airfoil:
             self.A1 = data["A1"].astype(np.float64)
             self.A2 = data["A2"].astype(np.float64)
 
-        self.Cl = np.pi * (2 * (self.A0_minus_alpha + alpha) + self.A1)
-        self.Cm_LE = -(self.Cl / 4) + (np.pi / 4) * (self.A2 - self.A1)
-        self.dCl_dalpha, self.Cl_0 = np.polyfit(alpha, self.Cl.astype(np.float64), 1)
+        self.cl = np.pi * (2 * (self.A0_minus_alpha + alpha) + self.A1)
+        self.cm_LE = -(self.cl / 4) + (np.pi / 4) * (self.A2 - self.A1)
+        self.dcl_dalpha, self.cl_0 = np.polyfit(alpha, self.cl.astype(np.float64), 1)
 
-        self.Fl = 0.5 * self.Cl * density * (cruise_speed**2) * wing.wing_area
+        self.Fl = 0.5 * self.cl * density * (cruise_speed**2) * wing.wing_area
         self.dFl_dalpha, self.Fl_0 = np.polyfit(alpha, self.Fl.astype(np.float64), 1)
 
         self.alpha_L0 = - self.A0_minus_alpha-0.5 * self.A1
@@ -104,7 +104,7 @@ class Wing:
         odd_indices = np.arange(1, n_coeffs * 2, step=2)
         theta_vals = np.linspace(0.01, np.pi / 2, n_coeffs)
         alpha_l_0 = np.linspace(self.tip_airfoil.alpha_L0, self.root_airfoil.alpha_L0, n_coeffs)
-        m0 = self.root_airfoil.dCl_dalpha
+        m0 = self.root_airfoil.dcl_dalpha
 
         def find_constants(alpha):
             a = np.zeros((n_coeffs, n_coeffs))
@@ -131,7 +131,7 @@ class Wing:
             self.Cl.append(constants[0])
             self.Cd.append(constants[1])
             
-    def skin_friction(self, n = int(1e4), Re_crit = 3e5):
+    def skin_friction(self, n = int(1e2), Re_crit = 3e5):
         section_points = self.wingspan / (2 * np.linspace(1, n, n))
 
         chord_per_point = self.root_airfoil.chord_length - (self.root_airfoil.chord_length - self.tip_airfoil.chord_length) * section_points / (self.wingspan / 2)
